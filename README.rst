@@ -18,22 +18,14 @@ The full documentation is at https://django-dynamic-views.readthedocs.org.
 Quickstart
 ----------
 
-Install django-dynamic-views::
+1. Install django-dynamic-views::
 
     pip install django-dynamic-views
-
-Then use it in a project::
+2. Add ``django_dynamic_views`` to ``settings.INSTALLED_APPS``::
+3. Use it in a project::
 
     import django_dynamic_views
-
-
-```
-pip install django-dynamic-views
-```
-
-Add django-dynamic-views to installed apps
-
-
+4. Now you can start defining your CRUD views. Start by reading the example below.
 
 Example
 =====================
@@ -50,27 +42,32 @@ models.py
 views.py
 --------
 ::
-
-    class ArticleCRUDView(dynamicviews.DynamicCRUDView):
+    import django_dynamic_views.views
+    
+    class ArticleCRUDView(django_dynamic_views.views.DynamicCRUDView):
         model = Article
 
 urls.py
 -------
 ::
 
-    urlpatterns += ArticleCRUDView.urls()
+    urlpatterns += yourapp.ArticleCRUDView().urls()
 
-You'll point your browser to /article/list/ and a basic list with Create / Read / Update and Delete
+
+Now point your browser to /article/list/ and a basic list with Create / Read / Update and Delete
 buttons will be displayed.
 
-So on the background it will create the following urls::
+In the background it will create the following url patterns::
 
-    /article/list/
-    /article/create/
-    /article/(?P<pk>[-\w]+)/update/
-    /article/(?P<pk>[-\w]+)/read/
-    /article/(?P<pk>[-\w]+)/delete/
+    urlpatterns = [
+        /article/list/
+        /article/create/
+        /article/(?P<pk>[-\w]+)/update/
+        /article/(?P<pk>[-\w]+)/read/
+        /article/(?P<pk>[-\w]+)/delete/
+    ]
 
+## Limiting the available views
 If you don't care for some of the urls you can modfiy the _links_ atribute on the CrudView::
 
     class ArticleCRUDView(dynamicviews.DynamicCRUDView):
@@ -85,6 +82,7 @@ This will result in the following urls::
 So this will give you a basic list with a Read button next to it.
 
 ## Override the default classes
+
 You can define which class the CRUD uses, so you can easily modify it's appearance and behaviour
 
 ::
@@ -98,7 +96,9 @@ You can define which class the CRUD uses, so you can easily modify it's appearan
         links = ['list', 'read']
         read_class = ArticleDetail
 
+## Overriding templates
 
+ ....
 
 Running Tests
 --------------
